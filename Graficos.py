@@ -9,7 +9,7 @@ import time
 pygame.init()
 W = 1000
 H = 600
-FPS = 60
+FPS = 30
 x = 0
 y = 0
 px = 50
@@ -73,7 +73,6 @@ sonido_abajo = pygame.image.load('sonido/volume_down.png')
 sonido_mute = pygame.image.load('sonido/volume_muted.png')
 sonido_max = pygame.image.load('sonido/volume_max.png')
 
-
 # Movimiento
 def recargaPantalla():
     # Variables globales
@@ -120,7 +119,10 @@ while ejecuta:
     clock.tick(FPS)
     #esto es para que vaya bajando y no sobrepase el limite de la pantalla
     if py < H-100:
-        py += 1
+        py += 2
+
+    if py <= 1:
+        py = 1
 
     # Bucle del juego
     for event in pygame.event.get():
@@ -149,15 +151,19 @@ while ejecuta:
         cuentaPasos = 0
 
     # Tecla W - Movimiento hacia arriba
-    if keys[pygame.K_w] and py > 100:
+    if keys[pygame.K_w] and py > 0:
+        print(py)
         py -= velocidad
 
     # Tecla S - Movimiento hacia abajo
-    if keys[pygame.K_s] and py < 300:
+    if keys[pygame.K_s] and py < H - rect.height:
+        print(py)
         py += velocidad
+
+
     # Tecla SPACE - Salto
     if not salto:
-        if keys[pygame.K_SPACE]:
+        if keys[pygame.K_SPACE] and not salto:
             salto = True
             izquierda = False
             derecha = False
