@@ -9,7 +9,7 @@ import time
 pygame.init()
 W = 1000
 H = 600
-FPS = 30
+FPS = 60
 x = 0
 y = 0
 px = 50
@@ -29,6 +29,21 @@ clock = pygame.time.Clock()
 salto = False
 # Contador de salto
 cuentaSalto = 1
+
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.speed_x = 0
+        self.image = pygame.image.load("imgs/idle1.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = W // 2
+        self.rect.bottom = H - 10
+        self.speed_x = 0
+
+    def update(self):
+        self.speed_x = 0
+
 
 # Variables dirección
 izquierda = False
@@ -72,6 +87,7 @@ sonido_arriba = pygame.image.load('sonido/volume_up.png')
 sonido_abajo = pygame.image.load('sonido/volume_down.png')
 sonido_mute = pygame.image.load('sonido/volume_muted.png')
 sonido_max = pygame.image.load('sonido/volume_max.png')
+
 
 # Movimiento
 def recargaPantalla():
@@ -117,12 +133,9 @@ while ejecuta:
     # FPS
 
     clock.tick(FPS)
-    #esto es para que vaya bajando y no sobrepase el limite de la pantalla
-    if py < H-100:
-        py += 2
-
-    if py <= 1:
-        py = 1
+    # esto es para que vaya bajando y no sobrepase el limite de la pantalla
+    if py < H - 100:
+        py += 1
 
     # Bucle del juego
     for event in pygame.event.get():
@@ -151,19 +164,15 @@ while ejecuta:
         cuentaPasos = 0
 
     # Tecla W - Movimiento hacia arriba
-    if keys[pygame.K_w] and py > 0:
-        print(py)
+    if keys[pygame.K_w] and py > 100:
         py -= velocidad
 
     # Tecla S - Movimiento hacia abajo
-    if keys[pygame.K_s] and py < H - rect.height:
-        print(py)
+    if keys[pygame.K_s] and py < 500:
         py += velocidad
-
-
     # Tecla SPACE - Salto
     if not salto:
-        if keys[pygame.K_SPACE] and not salto:
+        if keys[pygame.K_SPACE]:
             salto = True
             izquierda = False
             derecha = False
@@ -208,23 +217,3 @@ while ejecuta:
 
 # Salida del juego
 pygame.quit()
-
-# bucle del joc
-# while True:
-#     for event in pygame.event.get():
-#         if event.type == QUIT:
-#             pygame.quit()
-#             sys.exit()
-#     # obtenim el ample del fons, perque retorni "el resto"
-#     y_relativa = y % bg_img.get_rect().height
-#     # li restem el valor de y relativa - el ample del fons (li posem a la y perque es mogui arriba abaix)
-#     PANTALLA.blit(bg_img, (0, y_relativa - bg_img.get_rect().height))
-#     if y_relativa < W:
-#         PANTALLA.blit(bg_img, (0, y_relativa))
-#
-#     # aqui es posa x que es perque agafara la posicio que li digui la x, per aixo aniras cambiant la x o la y
-#     y = y - 1
-#     PANTALLA.blit(quieto, (int(px), int(py)))
-#     pygame.display.update()
-#
-#     clock.tick(FPS)
