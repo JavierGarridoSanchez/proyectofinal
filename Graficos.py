@@ -30,6 +30,21 @@ salto = False
 # Contador de salto
 cuentaSalto = 1
 
+
+class Player(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.speed_x = 0
+        self.image = pygame.image.load("imgs/idle1.png")
+        self.rect = self.image.get_rect()
+        self.rect.centerx = W // 2
+        self.rect.bottom = H - 10
+        self.speed_x = 0
+
+    def update(self):
+        self.speed_x = 0
+
+
 # Variables dirección
 izquierda = False
 derecha = False
@@ -118,8 +133,8 @@ while ejecuta:
     # FPS
 
     clock.tick(FPS)
-    #esto es para que vaya bajando y no sobrepase el limite de la pantalla
-    if py < H-100:
+    # esto es para que vaya bajando y no sobrepase el limite de la pantalla
+    if py < H - 100:
         py += 1
 
     # Bucle del juego
@@ -153,7 +168,7 @@ while ejecuta:
         py -= velocidad
 
     # Tecla S - Movimiento hacia abajo
-    if keys[pygame.K_s] and py < 300:
+    if keys[pygame.K_s] and py < 500:
         py += velocidad
     # Tecla SPACE - Salto
     if not salto:
@@ -202,23 +217,3 @@ while ejecuta:
 
 # Salida del juego
 pygame.quit()
-
-# bucle del joc
-# while True:
-#     for event in pygame.event.get():
-#         if event.type == QUIT:
-#             pygame.quit()
-#             sys.exit()
-#     # obtenim el ample del fons, perque retorni "el resto"
-#     y_relativa = y % bg_img.get_rect().height
-#     # li restem el valor de y relativa - el ample del fons (li posem a la y perque es mogui arriba abaix)
-#     PANTALLA.blit(bg_img, (0, y_relativa - bg_img.get_rect().height))
-#     if y_relativa < W:
-#         PANTALLA.blit(bg_img, (0, y_relativa))
-#
-#     # aqui es posa x que es perque agafara la posicio que li digui la x, per aixo aniras cambiant la x o la y
-#     y = y - 1
-#     PANTALLA.blit(quieto, (int(px), int(py)))
-#     pygame.display.update()
-#
-#     clock.tick(FPS)
