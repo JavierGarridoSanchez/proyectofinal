@@ -35,15 +35,36 @@ class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.speed_x = 0
-        self.image = pygame.image.load("imgs/idle1.png")
+        self.speed_y = 0
+        self.image = pygame.image.load("imgs/run1-izq.png")
         self.rect = self.image.get_rect()
-        self.rect.centerx = W // 2
-        self.rect.bottom = H - 10
+        self.rect.centerx = 0  # con estro controlas la posicion central del sprite
+        self.rect.centery = 0
         self.speed_x = 0
 
     def update(self):
         self.speed_x = 0
+        self.speed_y = 0
+        keystate = pygame.key.get_pressed()
+        if keystate[pygame.K_LEFT]:
+            self.speed_x = -5
+        if keystate[pygame.K_RIGHT]:
+            self.speed_x = 5
+        if keystate[pygame.K_UP]:
+            self.speed_y = 5
 
+        self.rect.x += self.speed_x
+        self.rect.y -= self.speed_y
+
+        if self.rect.right > W:
+            self.rect.right = W
+        if self.rect.left < 0:
+            self.rect.left = 0
+
+
+all_sprites = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
 
 # Variables dirección
 izquierda = False
@@ -211,9 +232,11 @@ while ejecuta:
         PANTALLA.blit(sonido_max, (850, 25))
 
     # Actualización de la ventana
-    pygame.display.update()
+    all_sprites.draw(PANTALLA)
+    pygame.display.flip()
     # Llamada a la función de actualización de la ventana
     recargaPantalla()
+    all_sprites.update()
 
 # Salida del juego
 pygame.quit()
