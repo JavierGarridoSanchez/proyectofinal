@@ -14,5 +14,6 @@ class Tile(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=pos)
 
     # movimiento de la camara ficticia porque pygame no tine camara (movimiento de cacda valdosa)
-    def update(self, x_shift):
+    def update(self, x_shift, y_shift):
         self.rect.x += x_shift
+        self.rect.y += y_shift

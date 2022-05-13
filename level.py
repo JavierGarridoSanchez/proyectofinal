@@ -64,23 +64,14 @@ class Level:
     def scroll_y(self):
         # recogemos el personaje, su posicion en el eje x y su dirección
         player = self.player.sprite
-        player_y = player.rect.centerx
+        player_bottom = player.rect.bottom
+        player_top = player.rect.top
         direction_y = player.direction.y
 
-        # comprobamos la posicion del jugador,
-        # 'direction_x', és el vector de dirección del
-        # jugador que incrementa cuando apretamos las
-        # teclas, al dejarlas de pulsar en una dirección
-        # y pulsar en otra, estamos declarando la intención
-        # de nuestro jugador de movernos en esa otra dirección.
-        # al dejar de pulsarlas devuelve la velocidad
-        # a nuestro personaje y la elimina de el mundo
-        # dando así la sensación de movimiento de camara
-
-        if player_y < screen_height / 4 and direction_y < 0:
+        if player_bottom < screen_height / 4 and direction_y < 0:
             self.world_shift_y = 8
             player.speed = 0
-        elif player_y > screen_height - (screen_height / 4) and direction_y > 0:
+        elif player_top > screen_height - (screen_height / 4) and direction_y > 0:
             self.world_shift_y = -8
             player.speed = 0
         else:
@@ -121,10 +112,10 @@ class Level:
                     player.direction.y = 0
 
     def run(self):
-        self.tiles.update(self.world_shift_x)
+        self.tiles.update(self.world_shift_x, self.world_shift_y)
         self.tiles.draw(self.display_surface)
         self.scroll_x()
-        # self.scroll_y()
+        self.scroll_y()
 
         # player
         self.player.update()
